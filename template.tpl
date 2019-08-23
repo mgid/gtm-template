@@ -40,11 +40,11 @@ ___TEMPLATE_PARAMETERS___
     "selectItems": [
       {
         "displayValue": "Convertion to Action",
-        "value": "action"
+        "value": "buy"
       },
       {
         "displayValue": "Convertion to Desire",
-        "value": "desire"
+        "value": "decision"
       },
       {
         "displayValue": "Convertion to Interest",
@@ -119,12 +119,12 @@ ___TEMPLATE_PARAMETERS___
       {
         "paramName": "EventType",
         "type": "EQUALS",
-        "paramValue": "action"
+        "paramValue": "buy"
       },
       {
         "paramName": "EventType",
         "type": "EQUALS",
-        "paramValue": "desire"
+        "paramValue": "decision"
       },
       {
         "paramName": "EventType",
@@ -144,12 +144,12 @@ ___TEMPLATE_PARAMETERS___
       {
         "paramName": "EventType",
         "type": "EQUALS",
-        "paramValue": "action"
+        "paramValue": "buy"
       },
       {
         "paramName": "EventType",
         "type": "EQUALS",
-        "paramValue": "desire"
+        "paramValue": "decision"
       },
       {
         "paramName": "EventType",
@@ -385,6 +385,8 @@ const copyFromWindow = require('copyFromWindow');
 const setInWindow = require('setInWindow');
 const getTimestamp = require('getTimestamp');
 const callInWindow = require('callInWindow');
+const createQueue = require('createQueue');
+const makeInteger = require('makeInteger');
 
 // Settings for pixel
 const settings = {
@@ -413,16 +415,15 @@ const pixel = {
      * @param options {object}
      */
     init: function(options) {
-        let MgSensorData = copyFromWindow('MgSensorData') || [];
-        MgSensorData.push({
-            cid: options.cid,
+        let MgSensorDataPush = createQueue('MgSensorData');
+        MgSensorDataPush({
+            cid: makeInteger(options.cid),
             lng: options.lang,
             nosafari: options.nosafari,
             project: options.host,
             eid: options.eid,
-            partner: options.partner,
+            partner: makeInteger(options.partner),
         });
-        setInWindow('MgSensorData', MgSensorData);
         injectScript(
             options.getSensorUrl(),
             options.onSuccess,
@@ -433,15 +434,16 @@ const pixel = {
 
     /**
      * Send pixel
-     * @param name {string}
+     * @param stage {string}
      * @param category {string}
      * @param revenue {number}
      */
-    send: function(name, category, revenue) {
+    send: function(stage, category, revenue) {
         callInWindow(
             'MgSensor.invoke',
-            name,
+            '__gtm_' +  stage + '_target',
             {
+                gtm_stage: stage,
                 gtm_category: category,
                 gtm_revenue: revenue,
             }
@@ -473,4 +475,4 @@ pixel.exec(settings);
 
 ___NOTES___
 
-Created on 8/20/2019, 6:09:28 PM
+Created on 8/23/2019, 2:07:36 PM
