@@ -1,0 +1,5 @@
+homepage: ​"www.mgid.com",
+documentation: ​"https://help.mgid.com"​,
+versions:
+  - ​sha:
+  ​  changeNotes: Initial release.
