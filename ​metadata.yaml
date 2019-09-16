@@ -1,5 +1,5 @@
 homepage: ​"www.mgid.com",
 documentation: ​"https://help.mgid.com"​,
 versions:
-  - ​sha:
+  - ​sha: 3d90d944b9b5d1b1e3b29117e6e8969482e9a536
   ​  changeNotes: Initial release.
