@@ -11,7 +11,7 @@ ___INFO___
 {
   "displayName": "MGID Pixel",
   "description": "Use the MGID Pixel for retargeting and conversion tracking.",
-  "categories": ["ADVERTISING", "CONVERSION_TRACKING", "REMARKETING"],
+  "categories": ["ADVERTISING", "CONVERSIONS", "REMARKETING"],
   "securityGroups": [],
   "id": "cvt_temp_public_id",
   "type": "TAG",
