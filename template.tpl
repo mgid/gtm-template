@@ -395,7 +395,6 @@ const getTimestamp = require('getTimestamp');
 const callInWindow = require('callInWindow');
 const createQueue = require('createQueue');
 const makeInteger = require('makeInteger');
-
 // Settings for pixel
 const settings = {
     cid: data.clientID,
@@ -412,7 +411,6 @@ const settings = {
     onFailure: data.gtmOnFailure,
     getSensorUrl: () => 'https://' + settings.host + '/mgsensor.js?d=' + getTimestamp() + '&source=gtm',
 };
-
 /**
  * MGID Pixel
  * @type {{init: pixel.init, send: pixel.send, exec: pixel.exec}}
@@ -423,6 +421,7 @@ const pixel = {
      * @param options {object}
      */
     init: function(options) {
+        setInWindow('MGIDFuncCalls', []);
         let MgSensorDataPush = createQueue('MgSensorData');
         MgSensorDataPush({
             cid: makeInteger(options.cid),
@@ -434,12 +433,22 @@ const pixel = {
         });
         injectScript(
             options.getSensorUrl(),
-            options.onSuccess,
-            options.onFailure
+            function() {
+              setInWindow('MGIDSensorLoaded', 1);
+              copyFromWindow('MGIDFuncCalls').forEach(function(item) {
+                pixel[item.method](
+                  item.options.eventType,
+                  item.options.conversionCategory,
+                  item.options.revenue
+                );
+              });
+              setInWindow('MGIDFuncCalls', [], true);
+              data.gtmOnSuccess();
+            },
+            data.gtmOnFailure
         );
         setInWindow('MGIDSensorInjected', 1);
     },
-
     /**
      * Send pixel
      * @param stage {string}
@@ -457,7 +466,6 @@ const pixel = {
             }
         );
     },
-
     /**
      * Execute pixel
      * @param options {object}
@@ -466,20 +474,29 @@ const pixel = {
         if (!copyFromWindow('MGIDSensorInjected')) {
             pixel.init(options);
         }
-
         if (options.notTriggeredEvents.indexOf(options.eventType) !== -1) {
             options.onSuccess();
             return;
         }
-
-        pixel.send(options.eventType, options.conversionCategory, options.revenue);
-        options.onSuccess();
+        if (!copyFromWindow('MGIDSensorLoaded')) {
+            var MGIDFuncCalls = copyFromWindow('MGIDFuncCalls');
+            MGIDFuncCalls.push({
+                method: 'send',
+                options: {
+                    eventType: options.eventType,
+                    conversionCategory: options.conversionCategory,
+                    revenue: options.revenue,
+                }
+            });
+            setInWindow('MGIDFuncCalls', MGIDFuncCalls, true);
+        } else {
+        	pixel.send(options.eventType, options.conversionCategory, options.revenue);
+        	options.onSuccess();
+        }
     },
 };
-
 // Executing MGID pixel
 pixel.exec(settings);
-
 
 ___NOTES___
 
