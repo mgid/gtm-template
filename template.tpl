@@ -45,171 +45,131 @@ ___TEMPLATE_PARAMETERS___
     "type": "TEXT"
   },
   {
-    "selectItems": [
+    "type": "RADIO",
+    "name": "pixelType",
+    "displayName": "",
+    "radioItems": [
       {
-        "displayValue": "Convertion to Action",
-        "value": "buy"
+        "value": "Base",
+        "displayValue": "Base Pixel",
+        "help": "Always add a tag with base pixel code firing on all pages per account ID."
       },
       {
-        "displayValue": "Convertion to Desire",
-        "value": "decision"
-      },
-      {
-        "displayValue": "Convertion to Interest",
-        "value": "interest"
-      },
-      {
-        "displayValue": "Page View",
-        "value": "pageView"
-      },
-      {
-        "displayValue": "Product View (Only for Dynamic Retargeting)",
-        "value": "dynamicRetargeting"
+        "value": "Event",
+        "displayValue": "Event Pixel",
+        "help": "Always add a tag with event pixel to set up a conversion goal.",
+        "subParams": [
+          {
+            "selectItems": [
+              {
+                "displayValue": "Main goal",
+                "value": "buy"
+              },
+              {
+                "displayValue": "Additional goal 1",
+                "value": "decision"
+              },
+              {
+                "displayValue": "Additional goal 2",
+                "value": "interest"
+              }
+            ],
+            "valueValidators": [
+              {
+                "type": "NON_EMPTY"
+              }
+            ],
+            "displayName": "",
+            "defaultValue": "buy",
+            "simpleValueType": true,
+            "name": "eventType",
+            "type": "SELECT"
+          },
+          {
+            "macrosInSelect": false,
+            "selectItems": [
+              {
+                "displayValue": "Page view",
+                "value": "pageView"
+              },
+              {
+                "displayValue": "Contact",
+                "value": "contact"
+              },
+              {
+                "displayValue": "Lead form engagement",
+                "value": "leadFormEngagement"
+              },
+              {
+                "displayValue": "Lead form submission",
+                "value": "leadFormSubmission"
+              },
+              {
+                "displayValue": "Registration",
+                "value": "registration"
+              },
+              {
+                "displayValue": "Sign up",
+                "value": "signUp"
+              },
+              {
+                "displayValue": "Add to Cart",
+                "value": "addToCart"
+              },
+              {
+                "displayValue": "Start checkout",
+                "value": "startCheckout"
+              },
+              {
+                "displayValue": "First time deposit",
+                "value": "firstTimeDeposit"
+              },
+              {
+                "value": "orderPlaced",
+                "displayValue": "Order placed (post-payment purchase)"
+              },
+              {
+                "value": "purchase",
+                "displayValue": "Purchase"
+              },
+              {
+                "value": "appInstall",
+                "displayValue": "App install"
+              },
+              {
+                "value": "redirectClick",
+                "displayValue": "Redirect click"
+              },
+              {
+                "value": "other",
+                "displayValue": "Other"
+              }
+            ],
+            "valueValidators": [
+              {
+                "type": "NON_EMPTY"
+              }
+            ],
+            "enablingConditions": [],
+            "displayName": "Conversion Category",
+            "defaultValue": "contact",
+            "simpleValueType": true,
+            "name": "conversionCategory",
+            "type": "SELECT"
+          },
+          {
+            "help": "Specify your earnings from conversion. You can set static value or use custom variable.",
+            "enablingConditions": [],
+            "displayName": "Conversion revenue (Optional)",
+            "simpleValueType": true,
+            "name": "conversionValue",
+            "type": "TEXT",
+            "canBeEmptyString": true
+          }
+        ]
       }
     ],
-    "valueValidators": [
-      {
-        "type": "NON_EMPTY"
-      }
-    ],
-    "displayName": "Event Type",
-    "defaultValue": "pageView",
-    "simpleValueType": true,
-    "name": "eventType",
-    "type": "SELECT"
-  },
-  {
-    "macrosInSelect": false,
-    "selectItems": [
-      {
-        "displayValue": "Registration",
-        "value": "registration"
-      },
-      {
-        "displayValue": "Lead",
-        "value": "lead"
-      },
-      {
-        "displayValue": "Click (Search Campaigns)",
-        "value": "click"
-      },
-      {
-        "displayValue": "Install App",
-        "value": "install"
-      },
-      {
-        "displayValue": "Download Content",
-        "value": "download"
-      },
-      {
-        "displayValue": "Sale",
-        "value": "sale"
-      },
-      {
-        "displayValue": "Add to Cart",
-        "value": "addToCart"
-      },
-      {
-        "displayValue": "Deposit",
-        "value": "deposit"
-      },
-      {
-        "displayValue": "Other",
-        "value": "other"
-      }
-    ],
-    "valueValidators": [
-      {
-        "type": "NON_EMPTY"
-      }
-    ],
-    "enablingConditions": [
-      {
-        "paramName": "eventType",
-        "type": "EQUALS",
-        "paramValue": "buy"
-      },
-      {
-        "paramName": "eventType",
-        "type": "EQUALS",
-        "paramValue": "decision"
-      },
-      {
-        "paramName": "eventType",
-        "type": "EQUALS",
-        "paramValue": "interest"
-      }
-    ],
-    "displayName": "Conversion Category",
-    "defaultValue": "lead",
-    "simpleValueType": true,
-    "name": "conversionCategory",
-    "type": "SELECT"
-  },
-  {
-    "help": "Specify your earnings from conversion. You can set static value or use custom variable.",
-    "enablingConditions": [
-      {
-        "paramName": "eventType",
-        "type": "EQUALS",
-        "paramValue": "buy"
-      },
-      {
-        "paramName": "eventType",
-        "type": "EQUALS",
-        "paramValue": "decision"
-      },
-      {
-        "paramName": "eventType",
-        "type": "EQUALS",
-        "paramValue": "interest"
-      }
-    ],
-    "displayName": "Conversion Value (Optional)",
-    "simpleValueType": true,
-    "name": "conversionValue",
-    "type": "TEXT",
-    "canBeEmptyString": true
-  },
-  {
-    "enablingConditions": [
-      {
-        "paramName": "eventType",
-        "type": "EQUALS",
-        "paramValue": "dynamicRetargeting"
-      }
-    ],
-    "valueValidators": [
-      {
-        "type": "NON_EMPTY"
-      },
-      {
-        "type": "POSITIVE_NUMBER"
-      }
-    ],
-    "displayName": "MGID Campaign ID",
-    "simpleValueType": true,
-    "name": "campaignID",
-    "type": "TEXT"
-  },
-  {
-    "help": "Specify custom variable that indicates item id in XML feed.",
-    "enablingConditions": [
-      {
-        "paramName": "eventType",
-        "type": "EQUALS",
-        "paramValue": "dynamicRetargeting"
-      }
-    ],
-    "valueValidators": [
-      {
-        "type": "NON_EMPTY"
-      }
-    ],
-    "displayName": "Product ID Variable",
-    "simpleValueType": true,
-    "name": "productID",
-    "type": "TEXT"
+    "simpleValueType": true
   }
 ]
 
@@ -414,15 +374,15 @@ ___WEB_PERMISSIONS___
                     "type": 8,
                     "boolean": true
                   },
-                 {
-                   "type": 8,
-                   "boolean": true
-                 },
-                 {
-                   "type": 8,
-                   "boolean": false
-                 }
-               ]
+                  {
+                    "type": 8,
+                    "boolean": true
+                  },
+                  {
+                    "type": 8,
+                    "boolean": false
+                  }
+                ]
               }
             ]
           }
@@ -477,15 +437,13 @@ const makeInteger = require('makeInteger');
 // Settings for pixel
 const settings = {
     cid: data.clientID,
-    eventType: data.eventType,
+    eventType: data.pixelType == 'Event' ? data.eventType : 'pageView',
     conversionCategory: data.conversionCategory,
     revenue: data.conversionValue,
-    partner: data.campaignID,
-    eid: data.productID,
     lang: 'us',
     host: 'a.mgid.com',
     nosafari: true,
-    notTriggeredEvents: ['pageView', 'dynamicRetargeting'],
+    notTriggeredEvents: ['pageView'],
     onSuccess: data.gtmOnSuccess,
     onFailure: data.gtmOnFailure,
     getSensorUrl: () => 'https://' + settings.host + '/mgsensor.js?d=' + getTimestamp() + '&source=gtm',
@@ -508,8 +466,6 @@ const pixel = {
             lng: options.lang,
             nosafari: options.nosafari,
             project: options.host,
-            eid: options.eid,
-            partner: makeInteger(options.partner),
         });
         injectScript(
             options.getSensorUrl(),
